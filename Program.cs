@@ -14,6 +14,10 @@ namespace DemiTicket.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Env
+            DotNetEnv.Env.Load();
+            builder.Configuration.AddEnvironmentVariables();
+
             // Add services to the container.
             builder.Services.AddControllers();
 
@@ -24,6 +28,8 @@ namespace DemiTicket.Api
             // Add custom services
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
+            builder.Services.AddScoped<IXenditPaymentService, XenditPaymentService>();
 
             // Add CORS policy
             builder.Services.AddCors(options => {
@@ -76,6 +82,9 @@ namespace DemiTicket.Api
                     { jwtSecurityScheme, Array.Empty<string>() }
                 });
             });
+
+            // Needed for Xendit
+            builder.Services.AddHttpClient();
 
             var app = builder.Build();
 

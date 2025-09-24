@@ -144,3 +144,10 @@ C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\obj\Debug\net9.0\refin
 C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\obj\Debug\net9.0\DemiTicket.Api.pdb
 C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\obj\Debug\net9.0\DemiTicket.Api.genruntimeconfig.cache
 C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\obj\Debug\net9.0\ref\DemiTicket.Api.dll
+C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\obj\Debug\net9.0\DemiTicket.Api.sourcelink.json
+C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\bin\Debug\net9.0\Stripe.net.dll
+C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\bin\Debug\net9.0\System.Configuration.ConfigurationManager.dll
+C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\bin\Debug\net9.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\bin\Debug\net9.0\DotNetEnv.dll
+C:\Users\donni\Desktop\Projects\DomiTicket\DemiTicket.Api\bin\Debug\net9.0\Sprache.dll
