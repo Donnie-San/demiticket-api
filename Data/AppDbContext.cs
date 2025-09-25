@@ -11,6 +11,7 @@ namespace DemiTicket.Api.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected AppDbContext()
         {

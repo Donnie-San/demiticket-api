@@ -31,7 +31,7 @@ namespace DemiTicket.Api.Controllers
             if (_context.Users.Any(u => u.Email == dto.Email))
                 return BadRequest("Email already registered!");
 
-            var token = GenerateSecureToken();
+            var token = _tokenService.GenerateSecureToken();
             var user = new User {
                 Email = dto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
@@ -62,11 +62,23 @@ namespace DemiTicket.Api.Controllers
             user.LastLogin = DateTime.UtcNow;
             await _context.SaveChangesAsync();
 
-            var token = _tokenService.CreateToken(user);
+            var accessToken = _tokenService.CreateToken(user);
+            var refreshToken = _tokenService.GenerateRefreshToken();
+
+            var tokenEntity = new RefreshToken {
+                Token = refreshToken,
+                UserId = user.Id,
+                ExpiresAt = DateTime.UtcNow.AddDays(7)
+            };
+
+            _context.RefreshTokens.Add(tokenEntity);
+            await _context.SaveChangesAsync();
+
 
             return Ok(new {
-                token,
-                role = user.Role
+                accessToken,
+                refreshToken,
+                Role = user.Role
             });
         }
 
@@ -83,13 +95,27 @@ namespace DemiTicket.Api.Controllers
             return Ok("Email verified successfully");
         }
 
-        private static string GenerateSecureToken(int length = 32)
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
         {
-            var bytes = new byte[length];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(bytes);
+            var tokenEntity = await _context.RefreshTokens
+                .FirstOrDefaultAsync(t => t.Token == refreshToken && t.IsActive);
 
-            return Convert.ToBase64String(bytes);
+            if (tokenEntity == null) return Unauthorized("Invalid or expired refresh token");
+
+            var user = await _context.Users.FindAsync(tokenEntity.UserId);
+            var newAccessToken = _tokenService.CreateToken(user);
+            var newRefreshToken = _tokenService.GenerateRefreshToken();
+
+            tokenEntity.RevokedAt = DateTime.UtcNow;
+            _context.RefreshTokens.Add(new RefreshToken {
+                Token = newRefreshToken,
+                UserId = user.Id,
+                ExpiresAt = DateTime.UtcNow.AddDays(7)
+            });
+
+            await _context.SaveChangesAsync();
+            return Ok(new { accessToken = newAccessToken, refreshToken = newRefreshToken });
         }
     }
 }
