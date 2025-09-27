@@ -5,5 +5,7 @@ namespace DemiTicket.Api.Services
     public interface ITokenService
     {
         string CreateToken(User user);
+        string GenerateSecureToken();
+        string GenerateRefreshToken();
     }
 }

@@ -41,10 +41,11 @@ namespace DemiTicket.Api.Controllers
         public async Task<IActionResult> CreateXenditCheckoutSession(Guid eventId)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userEmail = User.FindFirstValue(ClaimTypes.Email);
             var ev = await _context.Events.FirstOrDefaultAsync(e => e.Id == eventId && e.IsPublished);
             if (ev == null) return BadRequest("Invalid event");
 
-            var invoiceUrl = await _xenditPaymentService.CreateInvoice(userId, ev);
+            var invoiceUrl = await _xenditPaymentService.CreateInvoice(userId, ev, userEmail);
             return Ok(new { invoiceUrl });
         }
     }

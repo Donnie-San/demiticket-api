@@ -3,7 +3,6 @@ using DemiTicket.Api.DTOs;
 using DemiTicket.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -72,7 +71,7 @@ namespace DemiTicket.Api.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetById), new { id = user.Id }, new User {
+            var result = new UserReadDto {
                 Id = user.Id,
                 Email = user.Email,
                 Role = user.Role,
@@ -80,7 +79,9 @@ namespace DemiTicket.Api.Controllers
                 EmailVerificationToken = user.EmailVerificationToken,
                 CreatedAt = user.CreatedAt,
                 LastLogin = user.LastLogin ?? DateTime.MinValue
-            });
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = user.Id }, result);
         }
 
         [Authorize(Roles = "Admin")]
