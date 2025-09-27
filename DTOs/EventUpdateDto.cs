@@ -14,5 +14,5 @@ namespace DemiTicket.Api.DTOs
         [Required]
         public DateTime EventDate { get; set; }
         public bool IsPublished { get; set; }
-    }
+    } 
 }

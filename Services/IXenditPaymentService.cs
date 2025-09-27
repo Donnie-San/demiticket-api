@@ -4,6 +4,6 @@ namespace DemiTicket.Api.Services
 {
     public interface IXenditPaymentService
     {
-        Task<string> CreateInvoice(Guid userId, Event ev);
+        Task<string> CreateInvoice(Guid userId, Event ev, string userEmail);
     }
 }

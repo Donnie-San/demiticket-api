@@ -13,8 +13,8 @@ namespace DemiTicket.Api.Models
         public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public User User { get; set; }
-        public Event Event { get; set; }
+        public User User { get; set; } = null!;
+        public Event Event { get; set; } = null!;
     }
 
     public enum PaymentStatus

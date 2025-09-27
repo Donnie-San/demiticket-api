@@ -16,11 +16,11 @@ namespace DemiTicket.Api.Services
             _http = http;
         }
 
-        public async Task<string> CreateInvoice(Guid userId, Event ev)
+        public async Task<string> CreateInvoice(Guid userId, Event ev, string userEmail)
         {
             var payload = new {
                 external_id = $"invoice-{Guid.NewGuid()}",
-                payer_email = "user@example.com", // optional
+                payer_email = userEmail,
                 description = ev.Title,
                 amount = (int)(ev.Price * 1000), // IDR
                 success_redirect_url = _config["Xendit:SuccessUrl"],

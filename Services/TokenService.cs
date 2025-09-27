@@ -40,9 +40,9 @@ namespace DemiTicket.Api.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public string GenerateSecureToken(int length = 32)
+        public string GenerateSecureToken()
         {
-            var bytes = new byte[length];
+            var bytes = new byte[64];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(bytes);
 

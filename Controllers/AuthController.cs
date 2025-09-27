@@ -6,7 +6,6 @@ using DemiTicket.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 
 namespace DemiTicket.Api.Controllers
 {
@@ -104,6 +103,8 @@ namespace DemiTicket.Api.Controllers
             if (tokenEntity == null) return Unauthorized("Invalid or expired refresh token");
 
             var user = await _context.Users.FindAsync(tokenEntity.UserId);
+            if (user == null) return Unauthorized("User not found");
+            
             var newAccessToken = _tokenService.CreateToken(user);
             var newRefreshToken = _tokenService.GenerateRefreshToken();
 

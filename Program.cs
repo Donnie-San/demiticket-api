@@ -14,7 +14,7 @@ namespace DemiTicket.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Env
+            // Add Env
             DotNetEnv.Env.Load();
             builder.Configuration.AddEnvironmentVariables();
 
