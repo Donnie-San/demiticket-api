@@ -30,20 +30,21 @@ namespace DemiTicket.Api.Controllers
             if (_context.Users.Any(u => u.Email == dto.Email))
                 return BadRequest("Email already registered!");
 
-            var token = _tokenService.GenerateSecureToken();
-            var user = new User {
+            var verifyToken = _tokenService.GenerateSecureToken();
+            var newUser = new User {
                 Email = dto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                EmailVerificationToken = token,
+                EmailVerificationToken = verifyToken,
                 Role = "User",
                 CreatedAt = DateTime.UtcNow
             };
 
-            _context.Users.Add(user);
+            _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            var verificationLink = $"https://yourfrontend.com/verify-email?token={token}"; // Not yet decided
-            await _emailService.SendEmailAsync(user.Email, "Verify your email", $"Click here: <a href='{verificationLink}'>Verify</a>");
+            var encodedToken = Uri.EscapeDataString(verifyToken);
+            var verificationLink = $"https://localhost/verify-email?token={encodedToken}";
+            await _emailService.SendEmailAsync(newUser.Email, "Verify your email", $"Click here: <a href='{verificationLink}'>Verify</a>");
 
             return Ok("User registered. Please check your email!");
         }
@@ -73,10 +74,20 @@ namespace DemiTicket.Api.Controllers
             _context.RefreshTokens.Add(tokenEntity);
             await _context.SaveChangesAsync();
 
+            Response.Cookies.Append("refresh_token", refreshToken, new CookieOptions {
+                HttpOnly = true,
+                Secure = true, // required for SameSite=None
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(7),
+            });
+            Console.WriteLine($"Set refresh_token cookie for user {user.Email} (login)");
+
+            foreach (var cookie in Request.Cookies) {
+                Console.WriteLine($"{cookie.Key}: {cookie.Value}");
+            }
 
             return Ok(new {
                 accessToken,
-                refreshToken,
                 Role = user.Role
             });
         }
@@ -95,16 +106,26 @@ namespace DemiTicket.Api.Controllers
         }
 
         [HttpPost("refresh")]
-        public async Task<IActionResult> RefreshToken([FromBody] string refreshToken)
+        public async Task<IActionResult> RefreshToken()
         {
-            var tokenEntity = await _context.RefreshTokens
-                .FirstOrDefaultAsync(t => t.Token == refreshToken && t.IsActive);
+            foreach (var cookie in Request.Cookies) {
+                Console.WriteLine($"{cookie.Key}: {cookie.Value}");
+            }
 
-            if (tokenEntity == null) return Unauthorized("Invalid or expired refresh token");
+            var refreshToken = Request.Cookies["refresh_token"];
+            if (string.IsNullOrEmpty(refreshToken))
+                return Unauthorized("Missing refresh token");
+
+            var tokenEntity = await _context.RefreshTokens
+                .FirstOrDefaultAsync(t => t.Token == refreshToken);
+
+            if (tokenEntity == null || !tokenEntity.IsActive)
+                return Unauthorized("Invalid or expired refresh token");
 
             var user = await _context.Users.FindAsync(tokenEntity.UserId);
-            if (user == null) return Unauthorized("User not found");
-            
+            if (user == null)
+                return Unauthorized("User not found");
+
             var newAccessToken = _tokenService.CreateToken(user);
             var newRefreshToken = _tokenService.GenerateRefreshToken();
 
@@ -116,7 +137,16 @@ namespace DemiTicket.Api.Controllers
             });
 
             await _context.SaveChangesAsync();
-            return Ok(new { accessToken = newAccessToken, refreshToken = newRefreshToken });
+
+            Response.Cookies.Append("refresh_token", newRefreshToken, new CookieOptions {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(7),
+            });
+            Console.WriteLine($"Set refresh_token cookie for user {user.Email} (refresh)");
+
+            return Ok(new { accessToken = newAccessToken, role = user.Role });
         }
     }
 }

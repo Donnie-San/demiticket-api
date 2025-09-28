@@ -34,7 +34,7 @@ namespace DemiTicket.Api
             // Add CORS policy
             builder.Services.AddCors(options => {
                 options.AddPolicy("AllowFrontend", policy => {
-                    policy.WithOrigins("https://localhost:3000")
+                    policy.WithOrigins("https://localhost")
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials();

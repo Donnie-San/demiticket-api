@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\donni\\Desktop\\Projects\\DomiTicket\\DemiTicket.Api\\DemiTicket.Api.csproj": {}
+    "C:\\Users\\donni\\Desktop\\Projects\\demi-ticket\\DemiTicket.Api\\DemiTicket.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\donni\\Desktop\\Projects\\DomiTicket\\DemiTicket.Api\\DemiTicket.Api.csproj": {
+    "C:\\Users\\donni\\Desktop\\Projects\\demi-ticket\\DemiTicket.Api\\DemiTicket.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\donni\\Desktop\\Projects\\DomiTicket\\DemiTicket.Api\\DemiTicket.Api.csproj",
+        "projectUniqueName": "C:\\Users\\donni\\Desktop\\Projects\\demi-ticket\\DemiTicket.Api\\DemiTicket.Api.csproj",
         "projectName": "DemiTicket.Api",
-        "projectPath": "C:\\Users\\donni\\Desktop\\Projects\\DomiTicket\\DemiTicket.Api\\DemiTicket.Api.csproj",
+        "projectPath": "C:\\Users\\donni\\Desktop\\Projects\\demi-ticket\\DemiTicket.Api\\DemiTicket.Api.csproj",
         "packagesPath": "C:\\Users\\donni\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\donni\\Desktop\\Projects\\DomiTicket\\DemiTicket.Api\\obj\\",
+        "outputPath": "C:\\Users\\donni\\Desktop\\Projects\\demi-ticket\\DemiTicket.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

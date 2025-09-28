@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "72AhIVKNZKw=",
+  "dgSpecHash": "ZmUqRQfljUw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\donni\\Desktop\\Projects\\DomiTicket\\DemiTicket.Api\\DemiTicket.Api.csproj",
+  "projectFilePath": "C:\\Users\\donni\\Desktop\\Projects\\demi-ticket\\DemiTicket.Api\\DemiTicket.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\donni\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\donni\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",
